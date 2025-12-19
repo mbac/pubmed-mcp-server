@@ -371,6 +371,11 @@ export class StatefulTransportManager
     const transport = this.transports.get(sessionId);
     const server = this.servers.get(sessionId);
 
+    // Remove from maps immediately to prevent re-entry from callbacks (e.g., transport.onclose)
+    this.transports.delete(sessionId);
+    this.servers.delete(sessionId);
+    this.sessions.delete(sessionId);
+
     await ErrorHandler.tryCatch(
       async () => {
         if (transport) await transport.close();
@@ -378,10 +383,6 @@ export class StatefulTransportManager
       },
       { operation: "closeSession.cleanup", context: sessionContext },
     );
-
-    this.transports.delete(sessionId);
-    this.servers.delete(sessionId);
-    this.sessions.delete(sessionId);
 
     logger.info(
       `MCP Session closed and resources released: ${sessionId}`,
