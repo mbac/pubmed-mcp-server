@@ -203,6 +203,16 @@ Comprehensive usage examples for each tool are available in the [`examples/`](ex
 
 ### Development Scripts
 
+#### Token Generation
+
+To generate JWT tokens for testing authentication (requires source checkout):
+
+```bash
+npx ts-node scripts/generate_tokens.ts
+```
+
+This script generates tokens for test clients (`manus`, `gemini`, `perplexity`) using your `MCP_AUTH_SECRET_KEY`.
+
 ```bash
 # Build the project (compile TS to JS in dist/ and make executable)
 npm run build
